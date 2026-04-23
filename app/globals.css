@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* تأثيرات الإدخال */
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="text"]:focus {
+  border-color: #667eea !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+}
+
+/* أنماط النافذة المنبثقة */
+.floating-window {
+  transition: box-shadow 0.2s ease;
+}
+
+.floating-window:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* تحسين scroll للرسائل */
+.floating-window div::-webkit-scrollbar {
+  width: 6px;
+}
+
+.floating-window div::-webkit-scrollbar-track {
+  background: #ddd;
+  border-radius: 10px;
+}
+
+.floating-window div::-webkit-scrollbar-thumb {
+  background: #075e54;
+  border-radius: 10px;
+}
+
+.floating-window div::-webkit-scrollbar-thumb:hover {
+  background: #054b43;
+}
+
+/* تأثير التحميل */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* تأثير الزر عند الضغط */
+button {
+  transition: all 0.3s ease;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* تأثير التركيز على الأزرار */
+button:focus {
+  outline: none;
+}
+
+/* صفحة تسجيل الدخول - تحسينات إضافية */
+input::placeholder {
+  color: #cbd5e0;
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #f7fafc inset !important;
+  -webkit-text-fill-color: #1a1a2e !important;
+}
+
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #f7fafc inset !important;
+  -webkit-text-fill-color: #1a1a2e !important;
+}
