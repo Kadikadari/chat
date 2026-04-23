@@ -33,16 +33,18 @@ export default function RoomsPage() {
     return () => unsubscribe();
   }, [router]);
 
+  // مراقبة الرسائل الخاصة لفتح إشعار فوري (بدون الاعتماد على ملفات خارجية)
   useEffect(() => {
     if (!auth.currentUser) return;
     const q = query(collection(db, "conversations"), where("participants", "array-contains", auth.currentUser.uid));
+
     return onSnapshot(q, (snapshot) => {
       snapshot.docChanges().forEach((change) => {
         if (change.type === "modified") {
           const data = change.doc.data();
           if (data.lastMessageTime?.toMillis() > entryTime.current && data.lastSenderId !== auth.currentUser?.uid) {
             setIncomingMsg({ id: change.doc.id });
-            try { new Audio('/pop.mp3').play(); } catch(e) {}
+            try { new Audio('/pop.mp3').play().catch(() => {}); } catch(e) {}
           }
         }
       });
@@ -64,14 +66,16 @@ export default function RoomsPage() {
     <div style={styles.container}>
       {incomingMsg && (
         <div style={styles.alert}>
-          <p>📬 رسالة خاصة جديدة!</p>
+          <p>📬 رسالة خاصة جديدة وصلت!</p>
           <button onClick={() => setIncomingMsg(null)} style={styles.alertBtn}>إغلاق</button>
         </div>
       )}
+
       <div style={styles.topBar}>
-        <h1 style={styles.header}>غرف الدردشة</h1>
+        <h1 style={styles.header}>غرف الدردشة العربية</h1>
         {isAdmin && <button onClick={() => router.push("/admin")} style={styles.adminLink}>⚙️ لوحة التحكم</button>}
       </div>
+
       <div style={styles.roomList}>
         {rooms.map((room) => (
           <div key={room.id}
@@ -91,7 +95,7 @@ export default function RoomsPage() {
 const styles: { [key: string]: React.CSSProperties } = {
   container: { minHeight: "100vh", backgroundColor: "#f0f2f5", padding: "2rem", direction: "rtl", fontFamily: "sans-serif" },
   topBar: { display: "flex", justifyContent: "space-between", alignItems: "center", maxWidth: "800px", margin: "0 auto 2rem" },
-  header: { color: "#1a1a2e", margin: 0 },
+  header: { color: "#1a1a2e", margin: 0, fontSize: "1.5rem" },
   adminLink: { padding: "0.5rem 1rem", backgroundColor: "#0f3460", color: "#fff", border: "none", borderRadius: "8px", cursor: "pointer" },
   roomList: { display: "flex", flexDirection: "column", gap: "1rem", maxWidth: "800px", margin: "0 auto" },
   roomCard: { background: "linear-gradient(135deg, #e94560 0%, #0f3460 100%)", padding: "1.5rem", borderRadius: "12px", cursor: "pointer", textAlign: "center", color: "white", transition: "0.3s" },
